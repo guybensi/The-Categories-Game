@@ -148,19 +148,19 @@ The-Categories-Game/
     README.md        # this plan
   src/
     __init__.py
-    main.py          # bot entrypoint
-    bot.py           # telegram setup, handlers register
-    handlers.py      # commands + message routing
-    game_state.py    # in-memory game state per chat
-    round_logic.py   # round lifecycle + timers
-    validation.py    # Groq validation client
-    scoring.py       # scoring rules
-    storage.py       # MongoDB client + queries
-    models.py        # data models / helpers
-    categories.py    # list of categories
+    main.py          # bot entrypoint - Haim
+    bot.py           # telegram setup, handlers register -Haim
+    handlers.py      # commands + message routing -Haim
+    game_state.py    # in-memory game state per chat - Guy
+    round_logic.py   # round lifecycle + timers - Haim
+    validation.py    # Groq validation client - Guy
+    scoring.py       # scoring rules - Guy
+    storage.py       # MongoDB client + queries - GUY
+    models.py        # data models / helpers - Guy
+    categories.py    # list of categories - Haim
   tests/
     test_validation.py
-    test_scoring.py
+    test_scoring.py 
 ```
 
 Notes:
