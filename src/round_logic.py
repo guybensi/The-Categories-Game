@@ -20,6 +20,7 @@ from .validation import validate_answer_groq
 
 
 ROUND_DURATION_SECONDS = 5
+LEADERBOARD_TOP_N = 5
 
 
 def pick_letter() -> str:
@@ -109,6 +110,9 @@ async def end_round(chat_id: int, app: Application) -> None:
         if validation.valid:
             add_points(chat_id, draft.user_id, 1)
 
+    # --- Show leaderboard after each round ---
+    await _send_leaderboard(chat_id, app, top_n=LEADERBOARD_TOP_N)
+
     # --- Game Flow ---
     if is_game_over(chat_id):
         await _show_final_scores(chat_id, app)
@@ -135,3 +139,26 @@ async def _show_final_scores(chat_id: int, app: Application):
 
     await app.bot.send_message(chat_id, text)
     reset_game(chat_id)
+
+
+async def _send_leaderboard(chat_id: int, app: Application, top_n: int = 5):
+    scores = get_scores(chat_id)
+
+    if not scores:
+        await app.bot.send_message(chat_id, "📊 Leaderboard: No scores yet.")
+        return
+
+    sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    if top_n:
+        sorted_scores = sorted_scores[:top_n]
+
+    text = "📊 Leaderboard:\n\n"
+    for user_id, points in sorted_scores:
+        try:
+            user = await app.bot.get_chat_member(chat_id, user_id)
+            name = user.user.first_name
+        except Exception:
+            name = str(user_id)
+        text += f"{name} - {points} pts\n"
+
+    await app.bot.send_message(chat_id, text)

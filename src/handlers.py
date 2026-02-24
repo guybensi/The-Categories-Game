@@ -8,6 +8,7 @@ from .game_state import (
     record_answer,
     reset_game,
     get_scores,
+    get_round_answers,
 )
 from .models import now_ms
 from .round_logic import start_round, end_round
@@ -88,6 +89,17 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await update.message.reply_text(
             "⚠️ You already answered this round."
         )
+        return
+
+    # End early if all group members answered (best-effort using member count)
+    try:
+        member_count = await context.application.bot.get_chat_member_count(chat_id)
+        target_count = max(1, member_count - 1)  # exclude the bot itself
+        if len(get_round_answers(chat_id)) >= target_count:
+            await end_round(chat_id, context.application)
+    except Exception:
+        # If count fails, just let the timer end the round.
+        pass
 
 
 # -------------------------------------------------
