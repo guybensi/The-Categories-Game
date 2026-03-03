@@ -1,7 +1,7 @@
 # The Categories Game — Telegram Bot
 
-A multiplayer **Categories Game** bot for Telegram groups.  
-Each round the bot picks a random **letter** and **category** — players race to answer first.  
+A multiplayer **Categories Game** bot for Telegram groups.
+Each round the bot picks a random **letter** and **category** — players race to answer first.
 Answers are validated by AI (Groq) for spelling and correctness, and results are stored in MongoDB.
 
 ## Features
